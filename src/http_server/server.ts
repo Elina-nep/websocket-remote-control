@@ -1,6 +1,9 @@
 import WebSocket from "ws";
 import "dotenv/config";
-import { getMousePos } from "robotjs";
+import robot, { getMousePos, moveMouse } from "robotjs";
+import { mouseMove } from "../helpers/move";
+import { drawCircle } from "../helpers/drawCircle";
+import { drawRec } from "../helpers/dragRec";
 
 const PORT: number = +process.env.PORT! || 8080;
 console.log(process.env.PORT!);
@@ -13,47 +16,53 @@ export const onConnect = (wsClient: WebSocket) => {
   wsClient.on("message", function (message: Buffer) {
     try {
       const receivedCommand = message.toString("utf8").split(" ");
-      console.log(receivedCommand);
       switch (receivedCommand[0]) {
         case "mouse_position":
-          const coordinates = getMousePos();
-          wsClient.send(coordinates);
+          const mousePosition = robot.getMousePos();
+          wsClient.send(
+            `mouse_position ${mousePosition.x},${mousePosition.y}\0`
+          );
           break;
 
         case "draw_circle":
-          const radius = receivedCommand[1];
-          wsClient.send(receivedCommand);
+          const radius = +receivedCommand[1];
+          drawCircle(radius);
+
           break;
 
         case "draw_square":
-          const length = receivedCommand[1];
-          wsClient.send(receivedCommand);
+          const length = +receivedCommand[1];
+          drawRec(length);
           break;
 
         case "draw_rectangle":
-          const width = receivedCommand[1];
-          const height = receivedCommand[2];
-          wsClient.send(receivedCommand);
+          const width = +receivedCommand[1];
+          const height = +receivedCommand[2];
+          drawRec(width, height);
           break;
 
         case "mouse_up":
-          const shiftUp = receivedCommand[1];
-          wsClient.send(receivedCommand);
+          const shiftUp = +receivedCommand[1];
+          mouseMove("up", shiftUp);
+          //   wsClient.send(receivedCommand);
           break;
 
         case "mouse_down":
-          const shiftDown = receivedCommand[1];
-          wsClient.send(receivedCommand);
+          const shiftDown = +receivedCommand[1];
+          mouseMove("down", shiftDown);
+          //   wsClient.send(receivedCommand);
           break;
 
         case "mouse_left":
-          const shiftLeft = receivedCommand[1];
-          wsClient.send(receivedCommand);
+          const shiftLeft = +receivedCommand[1];
+          mouseMove("left", shiftLeft);
+          //   wsClient.send(receivedCommand);
           break;
 
         case "mouse_right":
-          const shiftRight = receivedCommand[1];
-          wsClient.send(receivedCommand);
+          const shiftRight = +receivedCommand[1];
+          mouseMove("right", shiftRight);
+          //   wsClient.send(receivedCommand);
           break;
 
         default:
