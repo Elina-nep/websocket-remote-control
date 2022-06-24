@@ -4,6 +4,7 @@ import robot, { getMousePos, moveMouse } from "robotjs";
 import { mouseMove } from "../helpers/move";
 import { drawCircle } from "../helpers/drawCircle";
 import { drawRec } from "../helpers/dragRec";
+import { prntScreen } from "../helpers/prntScreen";
 
 const PORT: number = +process.env.PORT! || 8080;
 console.log(process.env.PORT!);
@@ -16,6 +17,7 @@ export const onConnect = (wsClient: WebSocket) => {
   wsClient.on("message", function (message: Buffer) {
     try {
       const receivedCommand = message.toString("utf8").split(" ");
+      console.log(receivedCommand);
       switch (receivedCommand[0]) {
         case "mouse_position":
           const mousePosition = robot.getMousePos();
@@ -63,6 +65,11 @@ export const onConnect = (wsClient: WebSocket) => {
           const shiftRight = +receivedCommand[1];
           mouseMove("right", shiftRight);
           //   wsClient.send(receivedCommand);
+          break;
+
+        case "prnt_scrn":
+          const screenImg = prntScreen();
+          wsClient.send(`prnt_scrn ${screenImg}\0`);
           break;
 
         default:
