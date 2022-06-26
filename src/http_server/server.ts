@@ -23,23 +23,30 @@ export const onConnect = (wsClient: WebSocket) => {
           wsClient.send(
             `mouse_position ${mousePosition.x},${mousePosition.y}\0`
           );
+          console.log(
+            `mouse_position x = ${mousePosition.x} px, y = ${mousePosition.y} px`
+          );
           break;
 
         case "draw_circle":
           const radius = +receivedCommand[1];
           drawCircle(radius);
-
+          console.log(`drawn circle with radius ${radius} px`);
           break;
 
         case "draw_square":
           const length = +receivedCommand[1];
           drawRec(length);
+          console.log(`drawn square with side ${length} px`);
           break;
 
         case "draw_rectangle":
           const width = +receivedCommand[1];
           const height = +receivedCommand[2];
           drawRec(width, height);
+          console.log(
+            `drawn rectangle with width ${width} px and height ${height} px`
+          );
           break;
 
         case "mouse_up":
@@ -65,6 +72,7 @@ export const onConnect = (wsClient: WebSocket) => {
         case "prnt_scrn":
           const screenImg = prntScreen();
           wsClient.send(`prnt_scrn ${screenImg}\0`);
+          console.log(`Print screen was made`);
           break;
 
         default:

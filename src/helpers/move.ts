@@ -2,7 +2,7 @@ import robot from "robotjs";
 
 export const mouseMove = (direction: string, shift: number) => {
   const mousePosition = robot.getMousePos();
-  console.log("Mouse is at x:" + mousePosition.x + " y:" + mousePosition.y);
+
   switch (direction) {
     case "up":
       robot.moveMouse(mousePosition.x, mousePosition.y - shift);
@@ -19,4 +19,5 @@ export const mouseMove = (direction: string, shift: number) => {
     default:
       break;
   }
+  console.log("Mouse moved at x:" + mousePosition.x + " y:" + mousePosition.y);
 };
