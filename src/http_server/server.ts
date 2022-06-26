@@ -7,7 +7,6 @@ import { drawRec } from "../helpers/dragRec";
 import { prntScreen } from "../helpers/prntScreen";
 
 const PORT: number = +process.env.PORT! || 8080;
-console.log(process.env.PORT!);
 export const wsServer = new WebSocket.Server({ port: PORT });
 
 export const onConnect = (wsClient: WebSocket) => {
@@ -46,25 +45,21 @@ export const onConnect = (wsClient: WebSocket) => {
         case "mouse_up":
           const shiftUp = +receivedCommand[1];
           mouseMove("up", shiftUp);
-          //   wsClient.send(receivedCommand);
           break;
 
         case "mouse_down":
           const shiftDown = +receivedCommand[1];
           mouseMove("down", shiftDown);
-          //   wsClient.send(receivedCommand);
           break;
 
         case "mouse_left":
           const shiftLeft = +receivedCommand[1];
           mouseMove("left", shiftLeft);
-          //   wsClient.send(receivedCommand);
           break;
 
         case "mouse_right":
           const shiftRight = +receivedCommand[1];
           mouseMove("right", shiftRight);
-          //   wsClient.send(receivedCommand);
           break;
 
         case "prnt_scrn":
